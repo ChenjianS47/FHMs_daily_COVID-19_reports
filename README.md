@@ -15,9 +15,6 @@ The python script for getting old data is in [WayBackMachine_FHM_COVID-19_statis
 1. Load the data from the .xlxs file and name the datafram with the name of the sheet.
 2. Seperate the total data to daily changes
 
-## 
-https://github.com/ChenjianS47/FHMs_daily_COVID-19_reports/blob/main/fig_Antal_avlidna_per_dag.html
-
 ## License
 
 This programm is distributed under the MIT license. See
