@@ -1,8 +1,6 @@
 default:
-  #start_time: "2020/04/03"
-  start_time: "2021/08/20"
-  #end_time: "2021/09/17"
-  end_time: "2021/08/24"
+  start_time: "2020/04/03"
+  end_time: "2021/09/17"
   file_add_and_name: './data/Folkhalsomyndigheten_Covid19_'
   # Sheet type
   Antal per dag region: 1
@@ -15,6 +13,7 @@ default:
   Veckodata Kommun_stadsdel: 3
   Veckodata Riket: 3
   # Combined sheet
-  Antal per dag region/kön: [1,5]
- 
+  Antal per dag region_on_kön: [4,5]
+  Antal per dag Åldersgrupp_on_kön: [6,5]
+  Antal per dag region_on_Åldersgrupp: [4,6]
  
