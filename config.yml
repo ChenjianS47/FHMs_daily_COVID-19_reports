@@ -1,19 +1,21 @@
 default:
   start_time: "2020/04/03"
-  end_time: "2021/09/17"
+  end_time: "2021/12/30"
+  #start_time: "2020/06/10"
+  #end_time: "2020/06/13"
   file_add_and_name: './data/Folkhalsomyndigheten_Covid19_'
   # Sheet type
-  Antal per dag region: 1
-  Antal avlidna per dag: 1
-  Antal intensivvårdade per dag: 1
-  Totalt antal per region: 2
-  Totalt antal per kön: 2
-  Totalt antal per åldersgrupp: 2
-  Veckodata Region: 3
-  Veckodata Kommun_stadsdel: 3
-  Veckodata Riket: 3
+  Antal per dag region: !!seq [1,1,2,23]
+  Antal avlidna per dag: !!seq [1,1,2,2]
+  Antal intensivvårdade per dag: !!seq [1,1,2,2]
+  Totalt antal per region: !!seq [2,1,2,5]
+  Totalt antal per kön: !!seq [2,1,2,4]
+  Totalt antal per åldersgrupp: !!seq [2,1,2,4]
+  Veckodata Region: !!seq [3,3,4,11]
+  Veckodata Kommun_stadsdel: !!seq [3,6,7,10]
+  Veckodata Riket: !!seq [3,0,3,13]
   # Combined sheet
-  Antal per dag region_on_kön: [4,5]
-  Antal per dag Åldersgrupp_on_kön: [6,5]
-  Antal per dag region_on_Åldersgrupp: [4,6]
+  Antal per dag region_on_kön: !!seq [4,0,4,5]
+  Antal per dag Åldersgrupp_on_kön: !!seq [4,0,6,5]
+  Antal per dag region_on_Åldersgrupp: !!seq [4,0,4,6]
  

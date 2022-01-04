@@ -8,7 +8,7 @@ library(htmlwidgets)
 # Library the function for process the data file
 source('./Core/read_data_file.R')
 
-# Setting the language to English
+# Setting the time language to English
 Sys.setlocale("LC_TIME","english")
 
 # Setting the character type to Swedish
@@ -21,6 +21,7 @@ config <- config::get(file = "config.yml")
 time <- seq.Date(from = as.Date(unlist(config['start_time']),format = "%Y/%m/%d"),
                  to = as.Date(unlist(config['end_time']),format = "%Y/%m/%d"),
                  by = "1 day")
+
 # Generate the file path of the data
 file_add <- paste(paste(unlist(config['file_add_and_name']),
                         format(time, format="%b %d %Y"),
@@ -32,6 +33,7 @@ col_name <- list()
 
 
 print(paste('Processing',file_add[1]))
+
 # Read the first file
 read_data_file(file_add[1],file_stats = 'first')
 
