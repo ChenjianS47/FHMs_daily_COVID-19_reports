@@ -8,12 +8,12 @@ The resource of data comes from [Folkhalsomyndigheten](https://www.folkhalsomynd
 The python script for getting old data is in [WayBackMachine_FHM_COVID-19_statistics](https://github.com/ChenjianS47/WayBackMachine_FHM_COVID-19_statistics)
 
 ## Current Target
-1. Try to combined different data information
-2. Try to establish a model for Time series
+
 
 ## Finished 
 1. Load the data from the .xlxs file and name the datafram with the name of the sheet.
 2. Seperate the total data to daily changes
+3. 
 
 ## License
 
