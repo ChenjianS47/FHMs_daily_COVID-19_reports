@@ -1,39 +1,36 @@
 ---
-title: "732A76_report-chesh532"
+title: "732A76_Research_Project_report"
+subtitle: 'FHM’s daily COVID19 reports'
 author: "Chenjian Shi"
-date: "2021/12/30"
+affiliation: Linkoping University
+date: "2022/01/05"
 output: 
   pdf_document: 
     latex_engine: lualatex
     toc: yes
     number_sections: yes
 bibliography: Reference.bib
-abstract: .
+abstract: In this paper, we could introduce download FHM's covid19 data excel and the process of these data and analysis of the outputs. 
+
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+\newpage
+
 # Introduction
 
-
-
-
-# Background
-
+The first part of the project is to download (appropriately naming) Folkhalsomyndigheten’s daily (for those days that it was provided) excel spreadsheet report concerning COVID19 in Sweden from Wayback machine. Then, to design a database (in R) that stores all the the information in those sheets, implement a program (R) that reads in all of the sheets. The program should read these sheets from a given directory on the hard drive. The program should be flexible in the sense to read all the files in the given directory, not have the file names hardcoded, as new files can be added at a later stage. The database and program have to be flexible as sheet names in the excel files evolve, e.g. new ones are added can be renamed. They should be flexible for the future if FHM adds new, renames, removes sheets. The R database should be designed in such a way that is easy to use, with unproblematic extraction of the data from it. As part of the final report the downloaded spreadsheets and all the R code need to be handed-in as publicly available data and R package on GitHub or CRAN.
 
 # Data Access
 
-The data is downloaded  Folkhalsomyndigheten’s daily excel spread sheet report concerning COVID19 in Sweden from Wayback machine. In order to access the data, here we used a python script[.python_script] which implemented by a package called selenium[@selenium]. The selenium we used in this project is the Selenium WebDriver. This is a kind of browser-based automation test suites, which allows python scripts run the automation tests like mouse clicking,etc. by locating the xpath elements of the website,etc..
+The data is downloaded from Folkhalsomyndigheten’s daily excel spreadsheet report concerning COVID19 in Sweden from Wayback machine. In order to access the data, here we used a python script which implemented by a package called selenium[@selenium]. The selenium we used in this project is the Selenium WebDriver. This is a kind of browser-based automation test suite, which allows python scripts to run the automation tests like mouse-clicking, etc. by locating the XPath elements of the website, etc.
 
-In this paper, we would use the chrome driver(version 96.0.4664.45, based on Chrome 96.0.4664.110) which download from Chrome Driver's official website[@ChromeDriver], which is the webdriver for the Chrome. 
+In this paper, we would use the chrome driver(version 96.0.4664.45, based on Chrome 96.0.4664.110) which download from Chrome Driver's official website[@ChromeDriver], which is the webdriver for Chrome.
 
-The total script contains the files below:
-
-
-## Configs
-
+## Config
 Before running the main script, we first need to do some settings in the config.py file.
 
 ```{bash eval=FALSE, include=TRUE}
@@ -60,9 +57,9 @@ Download_directory = r'G:\LiU\732A76_Research_Project\data'
 
 ```
 
-In this file, we need to set the location of chrome driver first, which helps python scripts to run the webdriver. Besides, we sets the url for the Wayback Machine and the url for the Folkhalsomyndigheten in order to the get the files from the past. Then, we sets the start and end dates of the files we need, which in form of 'MON DAY YEAR'. At last, we set the download directory for the files.
+In this file, we need to set the location of the Chrome webdriver first, which helps python scripts to run the webdriver. Besides, we set the URL for the Wayback Machine and the URL for the Folkhalsomyndigheten in order to get the files from the past. Then, we set the start and end dates of the files we need, which are in form of 'MON DAY YEAR'. At last, we set the download directory for the files.
 
-## Data downloads
+## Data file downloads
 
 After finishing the setting of configs.py, we just run the 'main.py' file so that the download would start. The process of the downloads(in PyCharm IDE) would be like this 
 
@@ -81,14 +78,14 @@ Jan 02 2022 - 23:26:18, failed to download the file in Sep 17 2021
 Jan 02 2022 - 23:27:20, No file could be download in Sep 18 2021
 ```
 
-Each downloads may takes about 1 minitues, which depends on the network situation. The total time used in downloading the files from APR 03 2020 to DEC 28 2021 taks about 10 hours to download.
+Each download may take about 1 minute, which depends on the network situation. The total time used in downloading the files from APR 03 2020 to DEC 28 2021 takes about 10 hours to download.
 
 ![Data files(parts)](./1-Data_file(parts).PNG)
 
 
 # Data Proccessing
 
-After we gets the data files like above, we start to do the process these data by R script[.script_for_processing].
+After we get the data files like above, we start to do the process these data by R script.
 
 The required packages for the script are below:
 ```{r eval=FALSE, include=TRUE}
@@ -101,84 +98,249 @@ library(htmlwidgets)
 
 
 ## Config
-before start the process we need to do the config like we did before, but this time for the R script.
+
+Before starting the process of data we need to do the config.yml.
 
 ```{bash eval=FALSE, include=TRUE}
 default:
   start_time: "2020/04/03"
-  end_time: "2021/12/28"
+  end_time: "2021/12/30"
   file_add_and_name: './data/Folkhalsomyndigheten_Covid19_'
+  file_type: '.xlsx'
   # Sheet type
-  Antal per dag region: 1
-  Antal avlidna per dag: 1
-  Antal intensivvårdade per dag: 1
-  Totalt antal per region: 2
-  Totalt antal per kön: 2
-  Totalt antal per åldersgrupp: 2
+  Antal per dag region: !!seq [1,1,2,23]
+  Antal avlidna per dag: !!seq [1,1,2,2]
+  Antal intensivvårdade per dag: !!seq [1,1,2,2]
+  Totalt antal per region: !!seq [2,1,2,5]
+  Totalt antal per kön: !!seq [2,1,2,4]
+  Totalt antal per åldersgrupp: !!seq [2,1,2,4]
+  Veckodata Region: !!seq [3,3,4,11]
+  Veckodata Kommun_stadsdel: !!seq [3,6,7,10]
+  Veckodata Riket: !!seq [3,0,3,13]
   # Combined sheet
-  Antal per dag region_on_kön: [4,5]
-  Antal per dag Åldersgrupp_on_kön: [6,5]
-  Antal per dag region_on_Åldersgrupp: [4,6]
+  Antal per dag region_on_kön: !!seq [4,0,4,5]
+  Antal per dag Åldersgrupp_on_kön: !!seq [4,0,6,5]
+  Antal per dag region_on_Åldersgrupp: !!seq [4,0,4,6]
 ```
 
-## Functions in the script
+We first set the start/end date of the file we download, then set the file address and the name, then of course the file type. In this case, the file address with time sequence would create automatically like this "./data/Folkhalsomyndigheten_Covid19_Apr 03 2021.xlsx" later.
+
+About sheet type, here we have defined 4 types of sheets according to the current data. For now, I would first explain what these sequences doing. The first digit stands for the type of the sheets, the second letter stands for the column of time/label depending on the type of sheet. The third letter stands for the start column of the data, and the fourth letter stands for the end of the data. 
+
+For example, Antal per dag region: !!seq [1,1,2,23], means it is a type 1 sheet, and the time column is in the first column, the data we need starts from the second column to the twenty-third column.
+
+## Data reading
 
 
-### Data file reading
+### Type 1 sheet
+According to the settings: Antal per dag region: !!seq [1,1,2,23]
+
+The sheet (Antal per dag region) is a kind of type 1 sheet, with time sequence columns and data columns.
+
+![Type 1 sheet(Antal_per_dag_region)](./type_1-sheet.PNG)
+
+After relative processing, we could get the data frame with the 1st column as a time column, and the rest 2nd to 23rd column as data.
+
+![Type 1 data(Antal_per_dag_region)](./type_1-data.PNG)
+
+\newpage
+
+### Type 2 sheet
+
+According to the settings, Totalt antal per kön: !!seq [2,1,2,4]
+
+the sheet (Totalt antal per kön) is a kind of type 2 sheet, with only data.
+
+![Type 2 sheet(Totalt_antal_per_region)](./type_2-sheet.PNG)
+
+In this case, the second letter does not stand for a time, but the label. Then we just add one column(Date of the file) to the data frame as below, then combine these data into one named final_Totalt_antal_per_region.
+
+![Type 2 data(Totalt_antal_per_region)](./type_2-data.PNG)
+
+\newpage
+
+### Type 3 sheet
+
+For type 3, there are two types of data, but both of them are the same for the time part with year column and week column
+
+First, the sheet like Veckodata Region contains the week data and multiple labels(like KnKod, etc.)
+
+![Type 3-1 sheet(Veckodata Kommun_stadsdel)](./type_3-1-sheet.PNG)
+
+So according to the setting Veckodata Kommun_stadsdel: !!seq [3,6,7,10], choose the chosen label column and data columns as below.
+
+![Type 3-1 data(Veckodata Kommun_stadsdel)](./type_3-1-data.PNG)
+
+Then for the sheet like Veckodata_Riket, it only contains the time(year and week) column and data columns, in this case, we set the second letter as 0. 
+
+![Type 3-2 sheet(Veckodata_Riket)](./type_3-2-sheet.PNG)
+
+So according to the settings, Veckodata Riket: !!seq [3,0,3,13], we could get the data like below
+
+![Type 3-2 data(Veckodata_Riket)](./type_3-2-data.PNG)
+
+\newpage
+
+### Type 4 sheet
+
+For the type 4 sheet, it means the combined sheet, which takes the main sheet as base then using the data from other sheet(vice sheet) as a reference to create new data groups, for example, like Antal per dag Åldersgrupp_on_kön: !!seq [4,0,6,5]
+
+In this sheet(Antal per dag Åldersgrupp_on_kön), we use sixth sheet(Totalt antal per åldersgrupp) as the main sheet, and use fifth sheet (Totalt antal per kön) as vice sheet. In this case, the main data is based on the Totalt antal per åldersgrupp
+
+![Type 4 main sheet(Totalt antal per åldersgrupp)](./type_4-main_sheet.PNG)
+
+![Type 4 main sheet(Totalt antal per kön)](./type_4-vice_sheet.PNG)
+
+Then combined the data with the vice sheet(Totalt antal per kön), which provides the rates of different sex takes, which means we could get the data of Totalt_antal_fall, Totalt_antal_intensivvårdade and Totalt_antal_avlidna with different sex and age group.
+
+![Type 4 data(Antal_per_dag_Åldersgrupp_on_kön)](./type_4-data-1.PNG)
 
 
 
-
-### Visualing
-
-
-### Main script
+\newpage
 
 
 
+## Output
+
+After finishing processing the data, we would use the package plotly to do the visualization. Then save the plots in form of HTML, for example Antal_per_dag_region
+
+![Antal_per_dag_region](./fig_Antal_per_dag_region.PNG)
 
 
-### Output
-
-
+\newpage
 
 # Result Anlysis
 
 
-*fig_Antal_avlidna_per_dag.html*
+## Antal_avlidna_per_dag
+
+![Antal_avlidna_per_dag](./fig_Antal_avlidna_per_dag.PNG)
+
+According to the plot, we could find that the number of the death per day presents as a seasonal like data, which takes two peaks in Apr 2020 and Jan 2021. But the third peaks does appear in Oct 2021. Besides, the number of death per day is kind of relative to the weather, for example, it gets lower value from Apr to Oct, which is summer time and gets higher value from Oct to Jan when the temperature gets lower.
+
+\newpage
+
+## Antal_per_dag_region
+
+![Antal_per_dag_region](./fig_Antal_per_dag_region.PNG)
+
+According to the plot, we could find that the number of cases per day presents a seasonal like data, which from Oct 2020 to Oct 2021. The peeks occurs from Oct 2020 to Apr 2021, but there is a trough in the middle from Jan 2021 to Mar 2021.
+
+![Antal_per_dag_region(filtered)](./fig_Antal_per_dag_region-1.PNG)
+
+By filtering the low value, we could find that the most cases takes place in Skane, Stockholm and Vastra Gotaland.
+
+\newpage
+
+## Antal_intensivvårdade_per_dag
+
+![Antal_intensivvårdade_per_dag](./fig_Antal_intensivvardade_per_dag.PNG)
+
+According to the plot, we could find that the number of intensive care per day presents a data without any seasonal, which the peaks occurs in May 2020, Dec 2021 and Apr 2021. This data is similar to the data of [Antal_avlidna_per_dag] from Apr 2020 to Mar 2021, but from Apr 2021 it turns to a different trend by comparing with the [Antal_avlidna_per_dag]. This may caused by the [Antal_per_dag_region] peaks at Apr 2021.
+
+\newpage
+
+## Totalt_antal_per_åldersgrupp
+
+![Totalt_antal_per_åldersgrupp](./fig_Totalt_antal_per_aldersgrupp.PNG)
+
+According to the plot, we could find that for all the age group, the trend of total number of cases is growing up. Besides, the people in age group 20-59 takes most cases, and the age group 10-19 and age group  take the middle value and the age group 70-90 plus and 0-9 stays in a low value for a long time.
+
+As for number of intensive care per day, most people are in age from 10-39.
+
+As for number of death per day, most people are in age from 70-90 plus.
+
+\newpage
+
+## Totalt_antal_per_kön
+
+![Totalt_antal_per_kön](./fig_Totalt_antal_per_kon.PNG)
+
+According to the plot, we could find that the woman take more risk of getting effected than the man.
+
+But the death rate and the intensive care rate the man is lower the woman.
+
+\newpage
+
+## Totalt_antal_per_region
+
+![Totalt_antal_per_region](./fig_Totalt_antal_per_region.PNG)
+
+According to the plot, we could find that the trend of the data is similar to the data we mentioned previously, for example, like number of cases, most cases takes place in Skane, Stockholm and Vastra Gotaland,etc. 
 
 
-*fig_Antal_intensivvårdade_per_dag.html*
-
-*fig_Antal_per_dag_Åldersgrupp_on_kön.html*
+But for per 100000 infected, the rate of most regian are the same.
 
 
-*fig_Antal_per_dag_region.html*
+As for total number of intensive care, it has the same rate as number of cases does, which means most cases takes place in Skane, Stockholm and Vastra Gotaland.
 
 
+As for total number of death, it is also Skane, Stockholm and Vastra Gotaland take the top 3 rates.
 
-*fig_Antal_per_dag_region_on_Åldersgrupp.html*
+\newpage
+
+## Veckodata_Kommun_stadsdel
+
+![Veckodata_Kommun_stadsdel](./fig_Veckodata_Kommun_stadsdel.PNG)
+
+It is hard to find anything in this plot.
+
+\newpage
+
+## Veckodata_Region
+
+![Veckodata_Region](./fig_Veckodata_Region.PNG)
 
 
-*fig_Antal_per_dag_region_on_kön.html*
+This plot is similar to the Antal_per_dag_region.
+
+\newpage
+
+## Veckodata_Riket
+
+![Veckodata_Riket](./fig_Veckodata_Riket.PNG)
+
+The trend of data in this plot are same to the other plots.
+
+\newpage
+
+## Antal_per_dag_Åldersgrupp_on_kön
+
+![Antal_per_dag_Åldersgrupp_on_kön](./fig_Antal_per_dag_Aldersgrupp_on_kon.PNG)
+
+Based on the result of Totalt_antal_per_åldersgrupp, we could find that for each age group, the woman take the most part.
+
+\newpage
+
+## Antal_per_dag_region_on_Åldersgrupp
+
+![Antal_per_dag_region_on_Åldersgrupp](./fig_Antal_per_dag_region_on_Aldersgrupp.PNG)
+
+Based on the result of Totalt_antal_per_region, we could find that for each region, the age group 40-49 take the most part.
+
+\newpage
+
+## Antal_per_dag_region_on_kön.html
+
+![Antal_per_dag_region_on_kön](./fig_Antal_per_dag_region_on_kon.PNG)
+
+Based on the result of Totalt_antal_per_region, we could find that for each region, the woman take the most part.
 
 
-*fig_Totalt_antal_per_åldersgrupp.html*
-
-
-*fig_Totalt_antal_per_kön.html*
-
-
-*fig_Totalt_antal_per_region.html*
-
-# Conclusion
 
 # Appendix
 
-Code:
 
+All code and files is uploaded in the Github.
 
-Code:
+Data access
+
+https://github.com/ChenjianS47/WayBackMachine_FHM_COVID-19_statistics
+
+Data process
+
+https://github.com/ChenjianS47/FHMs_daily_COVID-19_reports
 
 # References
 

@@ -201,6 +201,10 @@ read_data_file <- function(file_add, file_stats){
         fig_name_temp <- paste('fig',i,sep='_')
         # Assign the variable fig_xxx to the string 'fig_xxx'
         assign(fig_name_temp, plot_sheet_type_3(i,time_col_pos),envir = .GlobalEnv)
+        
+        if ((fig_name_temp %in% fig_f)==FALSE) {
+          fig_f <<- append(fig_f,fig_name_temp)
+        }
       }
 
     }

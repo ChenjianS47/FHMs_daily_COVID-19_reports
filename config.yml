@@ -1,9 +1,8 @@
 default:
   start_time: "2020/04/03"
   end_time: "2021/12/30"
-  #start_time: "2020/06/10"
-  #end_time: "2020/06/13"
   file_add_and_name: './data/Folkhalsomyndigheten_Covid19_'
+  file_type: '.xlsx'
   # Sheet type
   Antal per dag region: !!seq [1,1,2,23]
   Antal avlidna per dag: !!seq [1,1,2,2]

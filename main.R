@@ -25,7 +25,7 @@ time <- seq.Date(from = as.Date(unlist(config['start_time']),format = "%Y/%m/%d"
 # Generate the file path of the data
 file_add <- paste(paste(unlist(config['file_add_and_name']),
                         format(time, format="%b %d %Y"),
-                        sep=''), '.xlsx',sep='')
+                        sep=''), config['file_type'],sep='')
 
 # Initialize the list for storing the names of plots
 fig_f <- list()

@@ -9,12 +9,11 @@ plot_sheet_type_3 <- function(dataset_name,time_col_pos){
   
   week <- str_pad(unlist(g[2]),2,side='left','0')
   
-  # time_line <- as.Date(paste(paste(year,week,sep=''), 'Monday'), '%Y%U %a')
-  time_line <- as.Date(paste(year,week,sep=''), '%Y%U')
+  yearweek <- paste(year,week,sep='')
   
-  time_line <- unname(strftime(unlist(time_line),format="%Y/%m/%d"))
+  time_line <- as.Date(paste(yearweek," Sunday",sep='') , '%Y%U %A')
   
-  if (unlist(time_col_pos[dataset_name])!=0){
+  if (unlist(time_col_pos[dataset_name])!= 0){
     g[, 4:(length(colnames(g)))] <- suppressWarnings(sapply(g[, 4:(length(colnames(g)))], 
                                            as.numeric))
     p <- plot_ly()
@@ -32,9 +31,9 @@ plot_sheet_type_3 <- function(dataset_name,time_col_pos){
       )
     }
   }else{
-    g[, -1] <- suppressWarnings(sapply(g[, -1], as.numeric))
+    g[, -1:-2] <- suppressWarnings(sapply(g[, -1:-2], as.numeric))
     p <- plot_ly()
-    for (i in 2:(length(colnames(g)))){
+    for (i in 3:(length(colnames(g)))){
       p <- p %>% add_trace(x = time_line, 
                            y = unlist(g[colnames(g)[i]]), 
                            name = colnames(g)[i], 
