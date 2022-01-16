@@ -1,7 +1,9 @@
 default:
   start_time: "2020/04/03"
-  end_time: "2021/12/30"
+  # end_time: "2022/01/15"
+  end_time: "2020/04/19"
   file_add_and_name: './data/Folkhalsomyndigheten_Covid19_'
+  data_update_seq: 14
   file_type: '.xlsx'
   # Sheet type
   Antal per dag region: !!seq [1,1,2,23]
@@ -9,7 +11,7 @@ default:
   Antal intensivvårdade per dag: !!seq [1,1,2,2]
   Totalt antal per region: !!seq [2,1,2,5]
   Totalt antal per kön: !!seq [2,1,2,4]
-  Totalt antal per åldersgrupp: !!seq [2,1,2,4]
+  Totalt antal per åldersgrupp: !!seq [2,1,2,2]
   Veckodata Region: !!seq [3,3,4,11]
   Veckodata Kommun_stadsdel: !!seq [3,6,7,10]
   Veckodata Riket: !!seq [3,0,3,13]

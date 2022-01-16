@@ -30,7 +30,8 @@ file_add <- paste(paste(unlist(config['file_add_and_name']),
 # Initialize the list for storing the names of plots
 fig_f <- list()
 col_name <- list()
-
+data_date_seq <<- unlist(config['data_update_seq'])
+data_series_set <<- 0
 
 print(paste('Processing',file_add[1]))
 

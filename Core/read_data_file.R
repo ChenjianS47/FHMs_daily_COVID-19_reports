@@ -10,6 +10,10 @@ source('./Core/plot_sheets_type_2.R')
 source('./Core/plot_sheets_type_3.R')
 source('./Core/plot_sheets_type_4.R')
 
+source("./Core/Time_step_type_1.R")
+
+source("./Core/data_differ_type_1.R")
+
 read_data_file <- function(file_add, file_stats){
   
   # Initialize the list for storing relative variables
@@ -19,6 +23,8 @@ read_data_file <- function(file_add, file_stats){
   time_col_pos  <- list()
   data_col_start  <- list()
   data_col_end  <- list()
+  
+  
   
   # Get the original name of the sheets from the excel file
   sheet_name_original <- excel_sheets(file_add)
@@ -69,9 +75,29 @@ read_data_file <- function(file_add, file_stats){
         data_select_type_1(i,time_col_pos,data_col_start,data_col_end)
         # Name the plots with the format of 'fig_xxx', where xxx is the name of
         # the sheet but with ' ' changed to '_'
+        
+        date_str <- str_replace_all( unlist(strsplit(unlist(strsplit(file_add[1],split = '_'))[3],split='.xlsx')),' ','_')
+        
+        assign(paste(i,date_str,sep='_'),eval(as.symbol(i)),envir = .GlobalEnv)
+        
+        assign(paste(i,'series',sep='_'),list(),envir = .GlobalEnv)
+        
+        
+        
+        data_series_temp <- eval(as.symbol(paste(i,'series',sep='_')))
+        data_series_name <- paste(i,date_str,sep='_')
+        data_series_temp <- append(data_series_temp,data_series_name)
+        assign(paste(i,'series',sep='_'),data_series_temp,envir = .GlobalEnv)
+        
+        data_differ_type_1(i,data_col_start,data_col_end,file_stats,file_add)
+        
         fig_name_temp <- paste('fig',i,sep='_')
+        
+        
         # Assign the variable fig_xxx to the string 'fig_xxx'
         assign(fig_name_temp, plot_sheet_type_1(i),envir = .GlobalEnv)
+        
+        # time_step_type_1(i,time_col_pos,data_col_start,data_col_end,file_stats)
         # Add the string to the list of the plots fig_f
         fig_f <<- append(fig_f,fig_name_temp)
         
@@ -148,15 +174,29 @@ read_data_file <- function(file_add, file_stats){
   }else if (file_stats=='others'){
     for (i in sheet_name_t){
       if(sheet_stats[i]==1){
-        
         # If the stats of the sheet is defined as 1, it is already the data with 
         # the date(day) sequence
         data_select_type_1(i,time_col_pos,data_col_start,data_col_end)
         # Name the plots with the format of 'fig_xxx', where xxx is the name of
         # the sheet but with ' ' changed to '_'
+        # time_step_type_1(i,time_col_pos,data_col_start,data_col_end,file_stats)
+        
+        
+        date_str <- str_replace_all( unlist(strsplit(unlist(strsplit(file_add[1],split = '_'))[3],split='.xlsx')),' ','_')
+        assign(paste(i,date_str,sep='_'),eval(as.symbol(i)),envir = .GlobalEnv)
+        
+        data_series_temp <- eval(as.symbol(paste(i,'series',sep='_')))
+        data_series_name <- paste(i,date_str,sep='_')
+        data_series_temp <- append(data_series_temp,data_series_name)
+        assign(paste(i,'series',sep='_'),data_series_temp,envir = .GlobalEnv)
+        
+        if (length(eval(as.symbol(paste(i,'series',sep='_')))) == data_date_seq) {
+            data_differ_type_1(i,data_col_start,data_col_end,data_series_set,file_add)
+        }
+        
         fig_name_temp <- paste('fig',i,sep='_')
         # Assign the variable fig_xxx to the string 'fig_xxx'
-        assign(fig_name_temp, plot_sheet_type_1(i),envir = .GlobalEnv)
+        assign(fig_name_temp, plot_sheet_type_1(paste('series',i,sep='_')),envir = .GlobalEnv)
         
       }else if(sheet_stats[i]==2){
         
