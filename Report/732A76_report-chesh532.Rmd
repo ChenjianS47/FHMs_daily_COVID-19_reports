@@ -37,20 +37,23 @@ Before running the main script, we first need to do some settings in the config.
 # Config.py
 
 # Location of chrome driver
-chrome_driver = r"C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe"
+chrome_driver = r"C:\Program Files (x86)\Google\Chrome\Application\
+                  chromedriver.exe"
 
 # Url for Wayback Machine
 Wayback_Machine_URL = 'https://web.archive.org/'
 
 # Target URL
-Target_URL = ('https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/'
+Target_URL = ('https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott
+              /aktuella-utbrott/covid-19/'
               'bekraftade-fall-i-sverige',
-              'https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/' \
+              'https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/
+              aktuella-utbrott/covid-19/' \
              'statistik-och-analyser/bekraftade-fall-i-sverige/')
 
 # Define the start date and final date
 start_date = 'APR 04 2020'
-final_date = 'DEC 28 2021'
+final_date = 'JAN 19 2022'
 
 # Download directory
 Download_directory = r'G:\LiU\732A76_Research_Project\data'
@@ -94,6 +97,7 @@ library(tidyverse)
 library(plotly)
 library(config)
 library(htmlwidgets)
+library(processx)
 ```
 
 
@@ -104,9 +108,12 @@ Before starting the process of data we need to do the config.yml.
 ```{bash eval=FALSE, include=TRUE}
 default:
   start_time: "2020/04/03"
-  end_time: "2021/12/30"
+  end_time: "2022/01/19"
   file_add_and_name: './data/Folkhalsomyndigheten_Covid19_'
+  data_update_seq: 14
   file_type: '.xlsx'
+  fig_output_type: '.png'
+  resolution: !!seq [1920,1080]
   # Sheet type
   Antal per dag region: !!seq [1,1,2,23]
   Antal avlidna per dag: !!seq [1,1,2,2]
@@ -128,6 +135,20 @@ We first set the start/end date of the file we download, then set the file addre
 About sheet type, here we have defined 4 types of sheets according to the current data. For now, I would first explain what these sequences doing. The first digit stands for the type of the sheets, the second letter stands for the column of time/label depending on the type of sheet. The third letter stands for the start column of the data, and the fourth letter stands for the end of the data. 
 
 For example, Antal per dag region: !!seq [1,1,2,23], means it is a type 1 sheet, and the time column is in the first column, the data we need starts from the second column to the twenty-third column.
+
+Then there is a config named "data_update_seq", this is about the correction date of the data from the first seen to the fixed data. The default date 14 is defined for most cases, the most 14 days data usually changes.
+
+Besides, there is a config about "fig_output_type" and "resolution", these configs are used for image output of the HTML file, which is actually like taking a screenshot of the .html file. 
+
+And this is the way offered by the plotly official(https://plotly.com/r/static-image-export/). 
+
+In this case, the user needs to install the orca by the following instruction: https://github.com/plotly/orca#installation. 
+
+And, the resolution of the output picture is about 1920x1080, but the user could change it as they want, but the user should know that, if the resolution is too low, the legend may be not showing completely. If the user meets this situation, please try to improve the resolution to like 4,096 x 2,160, etc.
+
+By the way, if users want to get the result with specific data, I suggest it changes the config and runs the program.
+
+\newpage
 
 ## Data reading
 

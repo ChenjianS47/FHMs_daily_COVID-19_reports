@@ -13,14 +13,13 @@ plot_sheet_type_4 <- function(dataset_name){
   for (i in 3:length(colnames(g))){
     p <- p %>% add_trace(x = time_line, 
                          y = unlist(g[colnames(g)[i]]), 
-                         name = colnames(g)[i], 
+                         legendgroup = colnames(g)[i],
+                         name = paste(colnames(g)[i],
+                                      unlist(g[colnames(g)[2]]),
+                                      sep='-'),
                          type = 'scatter', 
                          mode = 'lines',
-                         transforms = list(
-                           list(type = 'groupby',
-                                groups = unlist(g[2])
-                                )
-                           )
+                         color= (unlist(g[colnames(g)[2]]))
                          )
   }
   return(p)

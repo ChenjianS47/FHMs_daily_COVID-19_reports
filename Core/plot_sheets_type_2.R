@@ -8,21 +8,20 @@ plot_sheet_type_2 <- function(dataset_name){
                                                    origin="1970-01-01")))
   
   g[,3:length(colnames(g))] <- sapply(g[,3:length(colnames(g))], 
-                                           as.numeric)
+                                      as.numeric)
   
   p <- plot_ly()
   for (i in 3:length(colnames(g))){
     p <- p %>% add_trace(x = time_line, 
                          y = unlist(g[colnames(g)[i]]), 
-                         name = colnames(g)[i], 
+                         legendgroup = colnames(g)[i],
+                         name = paste(colnames(g)[i],
+                                      unlist(g[colnames(g)[2]]),
+                                      sep='-'),
                          type = 'scatter', 
                          mode = 'lines',
-                         transforms = list(
-                           list(type = 'groupby',
-                                groups = unlist(g[2])
-                                )
-                           )
-                         )
+                         color= (unlist(g[colnames(g)[2]]))
+    )
   }
   return(p)
 }

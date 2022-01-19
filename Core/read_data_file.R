@@ -10,8 +10,6 @@ source('./Core/plot_sheets_type_2.R')
 source('./Core/plot_sheets_type_3.R')
 source('./Core/plot_sheets_type_4.R')
 
-source("./Core/Time_step_type_1.R")
-
 source("./Core/data_differ_type_1.R")
 
 read_data_file <- function(file_add, file_stats){
@@ -23,8 +21,6 @@ read_data_file <- function(file_add, file_stats){
   time_col_pos  <- list()
   data_col_start  <- list()
   data_col_end  <- list()
-  
-  
   
   # Get the original name of the sheets from the excel file
   sheet_name_original <- excel_sheets(file_add)
@@ -81,8 +77,6 @@ read_data_file <- function(file_add, file_stats){
         assign(paste(i,date_str,sep='_'),eval(as.symbol(i)),envir = .GlobalEnv)
         
         assign(paste(i,'series',sep='_'),list(),envir = .GlobalEnv)
-        
-        
         
         data_series_temp <- eval(as.symbol(paste(i,'series',sep='_')))
         data_series_name <- paste(i,date_str,sep='_')
@@ -168,9 +162,7 @@ read_data_file <- function(file_add, file_stats){
         # Add the string to the list of the plots fig_f 
         fig_f <<- append(fig_f,paste('fig',name_temp,sep='_'))
       }
-      
     }
-    
   }else if (file_stats=='others'){
     for (i in sheet_name_t){
       if(sheet_stats[i]==1){

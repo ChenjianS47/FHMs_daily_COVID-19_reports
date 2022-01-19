@@ -32,6 +32,7 @@ fig_f <- list()
 col_name <- list()
 data_date_seq <<- unlist(config['data_update_seq'])
 data_series_set <<- 0
+fig_output_type <- ((config['fig_output_type']))
 
 print(paste('Processing',file_add[1]))
 
@@ -51,11 +52,17 @@ for (t in file_add[-1]){
 
 
 # Save the plot as the html
-print('Start to plot the data and save as .html file')
+
+width = unlist(config['resolution'])[1]
+height = unlist(config['resolution'])[2]
+
+print('Start to plot the data and save as .html and .png file')
 for (i in fig_f){
   p <- eval(as.symbol(i))
   saveWidget(as_widget(p), paste(i,'.html',sep=''))
+  orca(p,file = paste(i,fig_output_type,sep=''),height = height,width = width)
 }
+
 print('Finished')
 
 

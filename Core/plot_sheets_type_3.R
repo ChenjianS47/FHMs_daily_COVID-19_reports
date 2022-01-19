@@ -13,6 +13,8 @@ plot_sheet_type_3 <- function(dataset_name,time_col_pos){
   
   time_line <- as.Date(paste(yearweek," Sunday",sep='') , '%Y%U %A')
   
+  
+  
   if (unlist(time_col_pos[dataset_name])!= 0){
     g[, 4:(length(colnames(g)))] <- suppressWarnings(sapply(g[, 4:(length(colnames(g)))], 
                                            as.numeric))
@@ -25,10 +27,9 @@ plot_sheet_type_3 <- function(dataset_name,time_col_pos){
                            mode = 'lines',
                            transforms = list(
                              list(type = 'groupby',
-                                  groups = unlist(g[3])
+                                  groups = unlist(g[3]))
                              )
                            )
-      )
     }
   }else{
     g[, -1:-2] <- suppressWarnings(sapply(g[, -1:-2], as.numeric))
