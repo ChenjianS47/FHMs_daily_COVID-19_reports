@@ -34,6 +34,11 @@ data_date_seq <<- unlist(config['data_update_seq'])
 data_series_set <<- 0
 fig_output_type <- ((config['fig_output_type']))
 
+color_23 <<- c("#000000","#ff0900","#fffb00","#1bff00","#0098ff","#2400ff",
+               "#4902aa","#ff00bc","#ff8f00","#a61100","#a49500","#006300",
+               "#006173","#900088","#16fdb0","#3bfbff","#fe8cf7","#b4e0a7",
+               "#798383","#0c1370","#92be00","#550002")
+
 print(paste('Processing',file_add[1]))
 
 # Read the first file

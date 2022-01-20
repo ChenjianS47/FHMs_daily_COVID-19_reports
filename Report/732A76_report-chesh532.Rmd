@@ -224,7 +224,7 @@ Then combined the data with the vice sheet(Totalt antal per kön), which provide
 
 ## Output
 
-After finishing processing the data, we would use the package plotly to do the visualization. Then save the plots in form of HTML, for example Antal_per_dag_region
+After finishing processing the data, we would use the package plotly to do the visualization. Then save the plots in form of HTML, for example Antal_per_dag_region. Then a screen shot of the html file would be taken, then save the format as defined above(default png).
 
 ![Antal_per_dag_region](./fig_Antal_per_dag_region.PNG)
 
@@ -233,10 +233,14 @@ After finishing processing the data, we would use the package plotly to do the v
 
 # Result Anlysis
 
+The plots below contain different labels, for labels, which contains '_first' means the data first recorded in the file, and the '_differ' is the difference between the first seen date data and the data after the correction cycle.
+
 
 ## Antal_avlidna_per_dag
 
 ![Antal_avlidna_per_dag](./fig_Antal_avlidna_per_dag.PNG)
+
+
 
 According to the plot, we could find that the number of the death per day presents as a seasonal like data, which takes two peaks in Apr 2020 and Jan 2021. But the third peaks does appear in Oct 2021. Besides, the number of death per day is kind of relative to the weather, for example, it gets lower value from Apr to Oct, which is summer time and gets higher value from Oct to Jan when the temperature gets lower.
 
@@ -248,9 +252,7 @@ According to the plot, we could find that the number of the death per day presen
 
 According to the plot, we could find that the number of cases per day presents a seasonal like data, which from Oct 2020 to Oct 2021. The peeks occurs from Oct 2020 to Apr 2021, but there is a trough in the middle from Jan 2021 to Mar 2021.
 
-![Antal_per_dag_region(filtered)](./fig_Antal_per_dag_region-1.PNG)
-
-By filtering the low value, we could find that the most cases takes place in Skane, Stockholm and Vastra Gotaland.
+By filtering values and comparing, we could find that the most cases takes place in Skane, Stockholm and Vastra Gotaland.
 
 \newpage
 
@@ -266,11 +268,25 @@ According to the plot, we could find that the number of intensive care per day p
 
 ![Totalt_antal_per_åldersgrupp](./fig_Totalt_antal_per_aldersgrupp.PNG)
 
-According to the plot, we could find that for all the age group, the trend of total number of cases is growing up. Besides, the people in age group 20-59 takes most cases, and the age group 10-19 and age group  take the middle value and the age group 70-90 plus and 0-9 stays in a low value for a long time.
+Here is the plot that contains the all the categories.
 
-As for number of intensive care per day, most people are in age from 10-39.
+\newpage
 
-As for number of death per day, most people are in age from 70-90 plus.
+![Totalt_antal_per_åldersgrupp-fall](./fig_Totalt_antal_per_aldersgrupp-fall.PNG)
+
+According to the plot, we could find that for all the age group, the trend of total number of cases is growing up. Besides, the people in age group 20-49 takes most cases, and the age group 10-19 and age group 50-59 take the middle value and the age group 70-90 plus and 0-9 stays in a low value for a long time.
+
+\newpage
+
+![Totalt_antal_per_åldersgrupp-ICU](./fig_Totalt_antal_per_aldersgrupp-ICU.PNG)
+
+As for number of intensive care per day, most people are in age from 50-80 (age group 60-69 top then 70-79, 50-59 at third).
+
+\newpage
+
+![Totalt_antal_per_åldersgrupp-avlidna](./fig_Totalt_antal_per_aldersgrupp-avlidna.PNG)
+
+As for number of death per day, most people are in age from 80-89 then age group 90 plus and 70-79 takes the middle level.
 
 \newpage
 

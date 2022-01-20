@@ -13,6 +13,7 @@ plot_sheet_type_3 <- function(dataset_name,time_col_pos){
   
   time_line <- as.Date(paste(yearweek," Sunday",sep='') , '%Y%U %A')
   
+  colset <- color_23
   
   
   if (unlist(time_col_pos[dataset_name])!= 0){
@@ -39,7 +40,8 @@ plot_sheet_type_3 <- function(dataset_name,time_col_pos){
                            y = unlist(g[colnames(g)[i]]), 
                            name = colnames(g)[i], 
                            type = 'scatter', 
-                           mode = 'lines') 
+                           mode = 'lines',
+                           colors= colset) 
     }
   }
   

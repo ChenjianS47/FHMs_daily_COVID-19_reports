@@ -9,6 +9,8 @@ plot_sheet_type_4 <- function(dataset_name){
   g[,3:length(colnames(g))] <- suppressWarnings(sapply(g[,3:length(colnames(g))], 
                                            as.numeric))
   
+  colset <- color_23
+  
   p <- plot_ly()
   for (i in 3:length(colnames(g))){
     p <- p %>% add_trace(x = time_line, 
@@ -19,7 +21,8 @@ plot_sheet_type_4 <- function(dataset_name){
                                       sep='-'),
                          type = 'scatter', 
                          mode = 'lines',
-                         color= (unlist(g[colnames(g)[2]]))
+                         color= (unlist(g[colnames(g)[2]])),
+                         colors= colset
                          )
   }
   return(p)
